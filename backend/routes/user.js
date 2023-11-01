@@ -2,10 +2,20 @@ const express = require('express')
 const User = require('../models/User.js')
 const userRouter = express.Router()
 const { body, validationResult } = require('express-validator')
+const InMemoryCache = require('../lib/inMemoryCache.js')
+const redisConnection = require('../lib/redis.js')
+
+const inMemoryCache = new InMemoryCache()
 
 userRouter.get('/', async (req, res) => {
-    const user = await User.find()
-    res.send(user);
+    const cachedUsers = await redisConnection.client.get('users')
+    if (cachedUsers) {
+        return res.send(cachedUsers)
+    }
+
+    const users = await User.find({}, { password: 0 })
+    await redisConnection.client.set('users', JSON.stringify(users))
+    res.send(users);
 });
 
 userRouter.post("/login", async (req, res) => {
@@ -32,6 +42,7 @@ userRouter.post("/register",
         const existingUser = await User.findOne({ email: body.email })
         if (!existingUser) {
             await User.create(req.body)
+            redisConnection.client.del('users')
             res.json({ message: "user saved successfully" })
         }
         else {
@@ -43,7 +54,7 @@ userRouter.post("/register",
 
 userRouter.get("/:id", async (req, res) => {
     const id = req.params.id
-    let user = await User.findById(id)
+    let user = await User.findById(id, { password: 0 })
     if (user.isDeleted) {
         return res.status(404).json({ message: "user not found" })
     }
