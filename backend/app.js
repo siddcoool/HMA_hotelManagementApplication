@@ -1,11 +1,13 @@
 require('./config/database')
 const express = require('express');
 const app = express();
-const port = 3000; 
+const port = 5000; 
 const fs = require('fs');
+const cors = require('cors')
 const userRouter = require("./routes/user");
 
 
+app.use(cors())
 app.use(express.json())
 app.use("/user", userRouter)
 
