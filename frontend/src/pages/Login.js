@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,10 +20,14 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/user/login', {
+            const { status } = await axios.post('/user/login', {
                 email,
                 password
             })
+            if(status === 200) { 
+                toast.success('Login successful')
+                navigate('/')
+            }
         } catch (error) {
             if(!error.response){
                 toast.error('Internal server error')

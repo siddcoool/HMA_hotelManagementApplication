@@ -5,16 +5,13 @@ const { body, validationResult } = require('express-validator')
 const InMemoryCache = require('../lib/inMemoryCache.js')
 const redisConnection = require('../lib/redis.js')
 
-const inMemoryCache = new InMemoryCache()
-
 userRouter.get('/', async (req, res) => {
-    const cachedUsers = await redisConnection.client.get('users')
-    if (cachedUsers) {
-        return res.send(cachedUsers)
-    }
+    // const cachedUsers = await redisConnection.client.get('users')
+    // if (cachedUsers) {
+    //     return res.send(cachedUsers)
+    // }
 
-    const users = await User.find({}, { password: 0 })
-    await redisConnection.client.set('users', JSON.stringify(users))
+    const users = await User.find({})
     res.send(users);
 });
 
