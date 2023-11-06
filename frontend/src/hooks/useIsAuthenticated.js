@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 /**
@@ -10,17 +10,23 @@ import { useNavigate } from 'react-router-dom';
 
 const useIsAuthenticated = () => {
     const navigate = useNavigate();
+    const location = useLocation()
+
+    const [user, setUser] = useState(null)
+    
 
     const check = () => {
         const user = localStorage.getItem('hma-user')
-        if(user) {
-        } else {
+        if(!user && location.pathname !== "/register") {
             navigate('/login')
+        } else if(user) {
+            setUser(JSON.parse(user))
         }
+        
     }
 
-    const setAuthenticate = () => {
-       localStorage.setItem('hma-user', true)
+    const setAuthenticate = (user) => {
+       localStorage.setItem('hma-user', JSON.stringify(user))
        navigate('/')
     }
 
@@ -34,6 +40,7 @@ const useIsAuthenticated = () => {
     }, [])
 
     return {
+        user,
         setAuthenticate,
         deleteAuthenticated
     }

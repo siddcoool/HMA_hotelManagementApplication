@@ -34,9 +34,9 @@ userRouter.post("/login", async (req, res) => {
 })
 
 userRouter.post("/register",
-    body('email').notEmpty().trim().isEmail(),
+    body('email').notEmpty().trim().isEmail().withMessage("your email is incorrect"),
     body('name').notEmpty().isAlpha().withMessage("your name is incorrect"),
-    body('password').isStrongPassword(),
+    body('password').isStrongPassword().withMessage("your password is weak"),
     async (req, res) => {
         const body = req.body
         const result = validationResult(req)
@@ -57,7 +57,7 @@ userRouter.post("/register",
             })
         }
         else {
-            res.json({ message: "this account is already been registered" })
+            res.status(400).json({ message: "this account is already been registered" })
         }
 
 
