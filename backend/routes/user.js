@@ -46,8 +46,7 @@ userRouter.post("/register",
         const existingUser = await User.findOne({ email: body.email })
         if (!existingUser) {
             const user = await User.create(req.body)
-            redisConnection.client.del('users')
-            res.json({
+            res.status(200)json({
                 message: "user saved successfully",
                 user: {
                     id: user._id,

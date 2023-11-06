@@ -17,6 +17,9 @@ const useIsAuthenticated = () => {
 
     const check = () => {
         const user = localStorage.getItem('hma-user')
+        console.log({
+            user
+        });
         if(!user && location.pathname !== "/register") {
             navigate('/login')
         } else if(user) {
@@ -26,6 +29,9 @@ const useIsAuthenticated = () => {
     }
 
     const setAuthenticate = (user) => {
+        if(!user){
+            throw new Error("user is required")
+        }
        localStorage.setItem('hma-user', JSON.stringify(user))
        navigate('/')
     }
