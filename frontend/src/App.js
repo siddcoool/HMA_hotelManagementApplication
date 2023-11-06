@@ -1,23 +1,18 @@
-import logo from './logo.svg';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
+import './index.css';
 import Login from './pages/Login';
+import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import axios from 'axios';
+import Signup from './pages/Signup';
+import Home from './pages/Home';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
-
-function Home() {
-  return (
-    <div>Home</div>
-  )
-}
-
 function About() {
   return (
     <div>About</div>
@@ -43,13 +38,19 @@ const router = createBrowserRouter([
   }, {
     path: "/login",
     element: <Login />,
-  },
+
+  }, {
+    path: "/Signup",
+    element: <Signup />
+  }
 ]);
 
 const App = () => {
   return <>
+
     <RouterProvider router={router} />
     <ToastContainer />
+
   </>
 }
 
