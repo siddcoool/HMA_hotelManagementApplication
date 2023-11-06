@@ -17,12 +17,19 @@ userRouter.get('/', async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
     const body = req.body
-    const loginCheck = await User.findOne({ email: body.email, password: body.password })
-    if (!loginCheck) {
+    const user = await User.findOne({ email: body.email, password: body.password })
+    if (!user) {
         res.status(404).json({ message: "user not found" })
     }
     else {
-        res.json({ message: "Login Success" })
+        res.json({
+            message: "Login Success",
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
+        })
     }
 })
 
@@ -34,13 +41,20 @@ userRouter.post("/register",
         const body = req.body
         const result = validationResult(req)
         if (!result.isEmpty()) {
-            return res.send({ errors: result.array() });
+            return res.status(400).send({ errors: result.array() });
         }
         const existingUser = await User.findOne({ email: body.email })
         if (!existingUser) {
-            await User.create(req.body)
+            const user = await User.create(req.body)
             redisConnection.client.del('users')
-            res.json({ message: "user saved successfully" })
+            res.json({
+                message: "user saved successfully",
+                user: {
+                    id: user._id,
+                    name: user.name,
+                    email: user.email
+                }
+            })
         }
         else {
             res.json({ message: "this account is already been registered" })
