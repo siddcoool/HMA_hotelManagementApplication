@@ -1,15 +1,18 @@
 require('./config/database')
 const express = require('express');
 const app = express();
-const port = 5000; 
+const port = 5000;
 const fs = require('fs');
 const cors = require('cors')
 const userRouter = require("./routes/user");
-
+const roomRouter = require('./routes/room');
+const Authentication = require('./middlewares/Authentication');
 
 app.use(cors())
 app.use(express.json())
+
 app.use("/user", userRouter)
+app.use("/room", Authentication.Customer, roomRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, Express!');

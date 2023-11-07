@@ -2,10 +2,10 @@ const express = require('express')
 const User = require('../models/User.js')
 const userRouter = express.Router()
 const { body, validationResult } = require('express-validator')
-const InMemoryCache = require('../lib/inMemoryCache.js')
-const redisConnection = require('../lib/redis.js')
+const TokenManagement = require('../lib/Token.js')
+const Authentication = require('../middlewares/Authentication.js')
 
-userRouter.get('/', async (req, res) => {
+userRouter.get('/', Authentication.Admin, async (req, res) => {
     // const cachedUsers = await redisConnection.client.get('users')
     // if (cachedUsers) {
     //     return res.send(cachedUsers)
@@ -17,13 +17,14 @@ userRouter.get('/', async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
     const body = req.body
-    const user = await User.findOne({ email: body.email, password: body.password })
+    const user = await User.findOne({ email: body.email, password: body.password }, { password: 0 })
     if (!user) {
         res.status(404).json({ message: "user not found" })
     }
     else {
         res.json({
             message: "Login Success",
+            token: TokenManagement.createToken(user.toJSON()),
             user: {
                 id: user._id,
                 name: user.name,
@@ -46,8 +47,9 @@ userRouter.post("/register",
         const existingUser = await User.findOne({ email: body.email })
         if (!existingUser) {
             const user = await User.create(req.body)
-            res.status(200)json({
+            res.status(200).json({
                 message: "user saved successfully",
+                token: TokenManagement.createToken(user.toJSON()),
                 user: {
                     id: user._id,
                     name: user.name,
@@ -62,7 +64,11 @@ userRouter.post("/register",
 
     })
 
-userRouter.get("/:id", async (req, res) => {
+userRouter.get("/me", Authentication.Customer, async (req, res) => {
+    res.json(req.context.user)
+})
+
+userRouter.get("/:id", Authentication.Customer, async (req, res) => {
     const id = req.params.id
     let user = await User.findById(id, { password: 0 })
     if (user.isDeleted) {
