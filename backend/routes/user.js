@@ -82,7 +82,7 @@ userRouter.delete("/:id", async (req, res) => {
     const newEntry = {
         isDeleted: true
     }
-
+    
     const user = await User.findByIdAndUpdate(id, newEntry)
     res.json(user)
 })

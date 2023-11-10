@@ -3,10 +3,14 @@ const mongoose = require("mongoose")
 const RoomSchema = new mongoose.Schema(
     {
         floor : Number,
-        Description: String,
-        Price: Number,
+        description: String,
+        price: Number,
         bed: Number,
-        isAc : Boolean
+        isAc : Boolean,
+        isDeleted:{
+            type : Boolean,
+            default : false
+        }
     }
 )
 

@@ -6,7 +6,11 @@ const BookingSchema = new mongoose.Schema({
     startDate: Date,
     endDate: Date,
     status: String,
-    paymentMode : String
+    paymentMode : String,
+    isDeleted:{
+        type : Boolean,
+        default : false
+    }
 })
 
 const Booking = mongoose.model("Booking", BookingSchema)
