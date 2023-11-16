@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -28,11 +29,13 @@ const useIsAuthenticated = () => {
         
     }
 
-    const setAuthenticate = (user) => {
+    const setAuthenticate = (user, token) => {
         if(!user){
             throw new Error("user is required")
         }
        localStorage.setItem('hma-user', JSON.stringify(user))
+       localStorage.setItem('hma-token', token)
+       axios.defaults.headers.common.access_token = token
        navigate('/')
     }
 

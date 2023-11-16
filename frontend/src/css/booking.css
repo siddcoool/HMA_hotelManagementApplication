@@ -1,0 +1,58 @@
+/* booking.css */
+
+/* Add global styles if needed */
+
+body {
+    font-family: 'Arial', sans-serif; /* Change the font as needed */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  label {
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    background-color: #007bff; /* Change the color as needed */
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Change the hover color as needed */
+  }
+  
+  /* Add more styles for the rest of your components */
+  
+  /* Responsive styles can be added using the responsive utility classes */
+  

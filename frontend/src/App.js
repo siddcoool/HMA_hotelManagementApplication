@@ -2,7 +2,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import Login from './pages/Login';
-import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
 import {
   createBrowserRouter,
@@ -11,8 +10,13 @@ import {
 import axios from 'axios';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
+import Booking from './pages/Booking'
+import HorizontalLayout from './layout/HorizontalLayout';
+import BlankLayout from './layout/BlankLayout';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
+axios.defaults.headers.common.access_token = localStorage.getItem('hma-token')
+
 function About() {
   return (
     <div>About</div>
@@ -28,27 +32,37 @@ function Contact() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <HorizontalLayout>
+      <Home />
+    </HorizontalLayout>,
   }, {
     path: "/about",
-    element: <About />,
+    element: <HorizontalLayout><About /></HorizontalLayout>,
   }, {
     path: "/contact",
-    element: <Contact />,
+    element: <HorizontalLayout><Contact /></HorizontalLayout>,
   }, {
     path: "/login",
-    element: <Login />,
+    element: <BlankLayout><Login /></BlankLayout>,
 
   }, {
     path: "/register",
-    element: <Signup />
+    element: <BlankLayout><Signup /></BlankLayout>
+  },
+  {
+    path: "/room/:roomId/booking",
+    element: <HorizontalLayout><Booking /></HorizontalLayout>
   }
 ]);
 
 const App = () => {
   return <>
 
-    <RouterProvider router={router} />
+
+    <RouterProvider router={router} >
+
+    </RouterProvider>
+
     <ToastContainer />
 
   </>
