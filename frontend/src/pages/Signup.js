@@ -32,7 +32,7 @@ const Signup = () => {
       // Handle the response, you might want to redirect or show a success message
       if (status == 200) {
         toast.success(data.message)
-        setAuthenticate(data.user)
+        setAuthenticate(data.user, data.token)
       }
       else {
         toast.warning('Signup Failed')
