@@ -13,21 +13,13 @@ import Home from './pages/Home';
 import Booking from './pages/Booking'
 import HorizontalLayout from './layout/HorizontalLayout';
 import BlankLayout from './layout/BlankLayout';
+import AboutUs from './pages/About';
+import ContactUs from './pages/ContactUs';
+
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
 axios.defaults.headers.common.access_token = localStorage.getItem('hma-token')
 
-function About() {
-  return (
-    <div>About</div>
-  )
-}
-
-function Contact() {
-  return (
-    <div>Contact</div>
-  )
-}
 
 const router = createBrowserRouter([
   {
@@ -37,10 +29,10 @@ const router = createBrowserRouter([
     </HorizontalLayout>,
   }, {
     path: "/about",
-    element: <HorizontalLayout><About /></HorizontalLayout>,
+    element: <HorizontalLayout><AboutUs /></HorizontalLayout>,
   }, {
     path: "/contact",
-    element: <HorizontalLayout><Contact /></HorizontalLayout>,
+    element: <HorizontalLayout><ContactUs/></HorizontalLayout>,
   }, {
     path: "/login",
     element: <BlankLayout><Login /></BlankLayout>,
