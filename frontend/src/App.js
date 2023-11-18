@@ -49,31 +49,11 @@ const router = createBrowserRouter([
 
 const App = () => {
   return <>
-
-
     <RouterProvider router={router} >
-
     </RouterProvider>
-
     <ToastContainer />
 
   </>
 }
-
-// function App() {
-//   return (
-//     <>
-//       <Router>
-//         <Routes>
-//          <Route exact path="/" component={Home} />
-//         <Route path="/about" component={About} />
-//         <Route path="/contact" component={Contact} />
-//         </Routes>
-//          </Router>
-//       {/* <Login /> */}
-//       <ToastContainer />
-//     </>
-//   )
-// }
 
 export default App;

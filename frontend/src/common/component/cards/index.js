@@ -1,7 +1,8 @@
 import './index.css'
 
 const CardItem = (props) => {
-    const { price, description, onClick } = props.room
+    const { onClick } = props
+    const { price, description} = props.room
     return (
         <div className="ag-courses_item">
             <a href="#" className="ag-courses-item_link">

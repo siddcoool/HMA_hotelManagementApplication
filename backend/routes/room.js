@@ -2,9 +2,46 @@ const express = require('express')
 const Room = require('../models/Room')
 const roomRouter = express.Router()
 const { body, validationResult } = require('express-validator')
+const Booking = require('../models/Booking')
 
 roomRouter.get('/', async (req, res) => {
-    const rooms = await Room.find({})
+    const { startDate: start, endDate: end } = req.query
+    let roomIds, query = {}
+    if (start && end) {
+        const bookings = await Booking.find({
+            $or: [
+                {
+                    startDate: {
+                        $gte: new Date(start),
+                        $lte: new Date(end)
+                    }
+                },
+                {
+                    endDate: {
+                        $gte: new Date(start),
+                        $lte: new Date(end)
+                    }
+                },
+                {
+                    startDate: {
+                        $lte: new Date(start),
+                    },
+                    endDate: {
+                        $gte: new Date(end),
+                    },
+                }
+            ],
+        });
+
+        roomIds = bookings.map(booking => booking.room)
+    }
+    if (roomIds) {
+        query._id = {
+            $nin: roomIds
+        }
+    }
+    const rooms = await Room.find(query)
+
     res.send(rooms)
 })
 

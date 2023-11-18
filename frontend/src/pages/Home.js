@@ -1,23 +1,30 @@
 import { useEffect, useState } from "react";
 import useIsAuthenticated from "../hooks/useIsAuthenticated"
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
 import Loader from "../common/component/Loader";
 import Cards from "../common/component/cards";
-const url = "https://jsonplaceholder.typicode.com/users";
-
+import { getTomorrowDate } from "../common/functions/date";
 
 function Home() {
 
     const [rooms, setRooms] = useState([])
+    
     const navigate = useNavigate();
-    const { user, deleteAuthenticated } = useIsAuthenticated()
+    const { user } = useIsAuthenticated()
+
+    const [formData, setFormData] = useState({
+        startDate: '',
+        endDate: ''
+    });
 
     const fetchRooms = async () => {
         try {
-            const res = await axios.get("/room");
+            const res = await axios.get("/room", {
+                params: formData, headers: {key:"value"}
+            });
             const { data } = res
             return setRooms(data);
         } catch (error) {
@@ -26,13 +33,20 @@ function Home() {
         }
     }
 
+     const handleInputChange = (e) => {
+            setFormData({
+                ...formData,
+                [e.target.name]: e.target.value,
+            });
+        };
+
     const goToBooking = (room) => {
         navigate(`/room/${room._id}/booking`)
     }
 
     useEffect(() => {
         fetchRooms();
-    }, [])
+    }, [formData])
 
     if (!user) {
         return <></>
@@ -44,8 +58,30 @@ function Home() {
     return (
         <div>
             <center>
+                <div style={{width: "20%"}}>
+            <label>
+                    Start Date:
+                    <input
+                        type="date"
+                        name="startDate"
+                        value={formData.startDate}
+                        min={getTomorrowDate()}
+                        onChange={handleInputChange}
+                    />
+                </label>
+                <label>
+                    End Date:
+                    <input
+                        type="date"
+                        min={formData.startDate}
+                        name="endDate"
+                        value={formData.endDate}
+                        onChange={handleInputChange}
+                    />
+                </label>
+                </div>
                 <Cards items={rooms} onClick={goToBooking} />
-                {rooms.map((room) => {
+                {rooms.map(() => {
                 })}
             </center>
         </div>

@@ -2,14 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-const formatDate = (date) => {
-    date = new Date(date)
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
-    return `${month}-${day}-${year}`;
-  };
+import { formatDate } from '../common/functions/date';
 
 const BookingComponent = () => {
     const [formData, setFormData] = useState({
