@@ -5,10 +5,14 @@ const bookingRouter = express.Router()
 
 bookingRouter.get('/', async (req, res) => {
     const bookings = await Booking.find({})
-    .populate(['user', 'room'])
+        .populate(['user', 'room'])
     res.send(bookings)
 })
-
+bookingRouter.get('/me', async (req, res) => {
+    const user = req.context.user
+    const bookings = await Booking.find({ user }).populate("room")
+    res.send(bookings)
+})
 
 bookingRouter.post("/:roomId", async (req, res) => {
     const { startDate, endDate, status, paymentMode } = req.body

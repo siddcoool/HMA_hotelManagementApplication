@@ -49,12 +49,12 @@ roomRouter.post('/',
     body('floor').notEmpty().trim().withMessage("enter floor"),
     body('price').notEmpty().isNumeric().trim().withMessage("enter price"),
     body('bed').isNumeric().notEmpty().trim().withMessage("enter bed"),
-    body('isAc').notEmpty().isBoolean().withMessage("enter boolean values"),
+    body('isAc').isBoolean().withMessage("enter boolean values"),
     async (req, res) => {
-        const { floor, description, price, bed, isAc } = req.body
+        const { floor, description, price, bed, isAc, name } = req.body
 
         const newRoom = {
-            floor, description, price, bed, isAc
+            floor, description, price, bed, isAc,name
         }
         const room = await Room.create(newRoom)
         res.status(200).json({

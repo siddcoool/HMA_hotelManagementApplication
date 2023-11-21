@@ -12,6 +12,7 @@ const HorizontalLayout = ({ children }) => {
                 <li><Link to='/contact' >Contact</Link></li>
             </div>
             <div className="flex-space-between align_center">
+                <li><Link to='/mybookings' >My Bookings</Link></li>
                 <p style={{ color: 'white', paddingRight: 10 }}>Hi {user?.name}</p>
                 <button class="logoutButton" onClick={deleteAuthenticated}>Logout</button>
             </div>

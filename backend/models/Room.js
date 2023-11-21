@@ -6,6 +6,7 @@ const RoomSchema = new mongoose.Schema(
         description: String,
         price: Number,
         bed: Number,
+        name: Number,
         isAc : Boolean,
         isDeleted:{
             type : Boolean,

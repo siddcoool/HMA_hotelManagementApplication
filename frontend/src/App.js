@@ -15,6 +15,8 @@ import HorizontalLayout from './layout/HorizontalLayout';
 import BlankLayout from './layout/BlankLayout';
 import AboutUs from './pages/About';
 import ContactUs from './pages/ContactUs';
+import MyBookings from './pages/MyBookings'
+import CreateRoom from './pages/CreateRoom';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL
@@ -44,6 +46,12 @@ const router = createBrowserRouter([
   {
     path: "/room/:roomId/booking",
     element: <HorizontalLayout><Booking /></HorizontalLayout>
+  },{
+    path: "/mybookings",
+    element: <HorizontalLayout><MyBookings/></HorizontalLayout>
+  },{
+    path: "/room/create",
+    element: <CreateRoom/>
   }
 ]);
 
