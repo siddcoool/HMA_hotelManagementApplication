@@ -1,6 +1,8 @@
 const express = require('express')
 const Booking = require('../models/Booking')
 const bookingRouter = express.Router()
+const { body, validationResult } = require('express-validator')
+
 
 
 bookingRouter.get('/', async (req, res) => {
@@ -13,21 +15,24 @@ bookingRouter.get('/me', async (req, res) => {
     const bookings = await Booking.find({ user }).populate("room")
     res.send(bookings)
 })
+body('floor').notEmpty().trim().withMessage("enter floor")
 
-bookingRouter.post("/:roomId", async (req, res) => {
-    const { startDate, endDate, status, paymentMode } = req.body
-    const { roomId } = req.params
-    const { user } = req.context;
+bookingRouter.post("/:roomId", body('startDate').notEmpty(),
+    body('endDate').notEmpty(),
+    async (req, res) => {
+        const { startDate, endDate, status, paymentMode } = req.body
+        const { roomId } = req.params
+        const { user } = req.context;
 
-    const newBooking = {
-        startDate, endDate, status, paymentMode, user, room: roomId
-    }
+        const newBooking = {
+            startDate, endDate, status, paymentMode, user, room: roomId
+        }
 
-    const booking = await Booking.create(newBooking)
-    res.status(200).json({
-        message: "booking is created"
+        const booking = await Booking.create(newBooking)
+        res.status(200).json({
+            message: "booking is created"
+        })
     })
-})
 
 bookingRouter.put('/:bookingId', async (req, res) => {
     const id = req.params.bookingId
@@ -45,7 +50,7 @@ bookingRouter.delete('/:bookingId', async (req, res) => {
     const newEntry = {
         isDeleted: true
     }
-    const booking = await Booking.findByIdAndDelete(id, newEntry)
+    const booking = await Booking.findByIdAndDelete(id)
     res.json(booking)
 })
 

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import BookingCard from "../common/component/bookingCard";
+import BookingCard from "../common/component/BookingCard";
+import BookingCard2 from '../common/component/BookingCard2'
 
 
 const MyBookings = (props) => {
@@ -22,11 +23,15 @@ const MyBookings = (props) => {
              fetchBookings()
         }, [])
     
+    const cancelBookings = (BookingId) => {
+
+    }
 console.log({bookings})
     return (
         <>
             <div>bookings</div>
-            <BookingCard bookings={bookings}  />
+            {/* <BookingCard bookings={bookings}  /> */}
+            <BookingCard2 bookings={bookings} {cancelBookings}/>
         </>
 
     )

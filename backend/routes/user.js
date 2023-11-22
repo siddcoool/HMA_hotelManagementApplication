@@ -34,6 +34,12 @@ userRouter.post("/login", async (req, res) => {
     }
 })
 
+userRouter.post('/:userId', async (req, res) => {
+    const Id = req.body.userId
+    const user = await User.findById(Id)
+    res.send(user)
+})
+
 userRouter.post("/register",
     body('email').notEmpty().trim().isEmail().withMessage("your email is incorrect"),
     body('name').notEmpty().isAlpha().withMessage("your name is incorrect"),

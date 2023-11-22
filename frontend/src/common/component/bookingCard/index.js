@@ -1,5 +1,8 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const BookingCard = ({bookings}) => {
+const BookingCard = ({ bookings }) => {
+  const [isCancel, setIsCancel] = useState(false)
   const cardStyle = {
     width: '300px',
     height: '200px',
@@ -11,24 +14,35 @@ const BookingCard = ({bookings}) => {
     backgroundColor: 'white',
     fontFamily: 'Roboto, sans-serif',
   };
+  console.log({ bookings })
+  const bookingId = bookings._id
+
+  const handleCancel = async (booking) => {
+    setIsCancel(true);
+     await axios.delete(`/booking/${booking._id}`)
+  }
+
 
   return (
 
     <div style={cardStyle}>
-     { bookings.map((booking, index)=> (
-       <div key={index} style={cardStyle}>
-       <p>startDate : {booking.startDate}</p>
-       <p>endDate : {booking.endDate}</p>
-       <p>status : {booking.status}</p>
-       <p>name : {booking.room.name}</p>
+      {bookings.map((booking, index) => (
+        <div key={index} style={cardStyle}>
+          <p>startDate : {booking.startDate}</p>
+          <p>endDate : {booking.endDate}</p>
+          <p>status : {booking.status}</p>
+          <p>name : {booking.room.name}</p>
+
+          <button onClick={() => handleCancel(booking)} >Cancel</button>
 
 
-       <p>{/* Display other booking information here */}</p>
-     </div>
-     )
+
+          <p>{/* Display other booking information here */}</p>
+        </div>
+      )
 
       )}
-      
+
     </div>
   );
 };
