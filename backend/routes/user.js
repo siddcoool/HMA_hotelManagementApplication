@@ -11,7 +11,8 @@ userRouter.get('/', Authentication.Admin, async (req, res) => {
     //     return res.send(cachedUsers)
     // }
 
-    const users = await User.find({})
+    const users = await User.find({}, { password: 0 })
+
     res.send(users);
 });
 
@@ -20,6 +21,9 @@ userRouter.post("/login", async (req, res) => {
     const user = await User.findOne({ email: body.email, password: body.password }, { password: 0 })
     if (!user) {
         res.status(404).json({ message: "user not found" })
+    }
+    else if (user.isBlocked) {
+        res.status(401).json({ message: "user is blocked" })
     }
     else {
         res.json({
@@ -83,7 +87,7 @@ userRouter.delete("/:id", async (req, res) => {
     const newEntry = {
         isDeleted: true
     }
-    
+
     const user = await User.findByIdAndUpdate(id, newEntry)
     res.json(user)
 })
@@ -92,7 +96,7 @@ userRouter.put("/:id", async (req, res) => {
     const id = req.params.id
     const { name, gender, isAdmin } = req.body
     const newEntry = {
-        name, gender, isAdmin
+        name, gender, isAdmin, isBlocked
     }
 
     const user = await User.findByIdAndUpdate(id, newEntry)
@@ -107,6 +111,18 @@ userRouter.put("/:id/reset", async (req, res) => {
     }
     const user = await User.findByIdAndUpdate(id, newEntry)
     res.json(user)
+})
+
+userRouter.put("/:userId/block/toggle", Authentication.Admin, async (req, res) => {
+    const { userId } = req.params
+    const user = await User.findById(userId)
+    if (!user) {
+        return res.status(404).send()
+    }
+
+    user.isBlocked = !user.isBlocked
+    await user.save()
+    res.json({ message: "operation successfully" })
 })
 
 module.exports = userRouter

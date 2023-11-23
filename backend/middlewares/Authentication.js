@@ -35,6 +35,10 @@ class Authentication {
             req.context = {
                 user: await User.findById(user._id)
             }
+            if(req.context.user.isBlocked){
+                res.status(401).json({message:"user is blocked"})
+            }
+            
             next()
         } catch (error) {
             res.status(401).send({

@@ -6,6 +6,7 @@ import BookingCard from '../common/component/BookingCard2'
 
 const MyBookings = (props) => {
     const [bookings, setBookings] = useState([])
+    const [isDeleted, setIsDeleted] = useState(false)
 
     const fetchBookings = async () => {
         try {
@@ -20,10 +21,11 @@ const MyBookings = (props) => {
 
     useEffect(() => {
         fetchBookings()
-    }, [])
+    }, [isDeleted])
 
     const cancelBookings = async (booking) => {
         await axios.delete(`/booking/${booking._id}`)
+        setIsDeleted(true)
     }
     console.log({ bookings })
     return (

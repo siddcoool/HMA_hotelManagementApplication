@@ -1,6 +1,5 @@
 import React from 'react';
 import Login from '../pages/Login';
-
 import Signup from '../pages/Signup';
 import Home from '../pages/Home';
 import Booking from '../pages/Booking'
@@ -8,11 +7,11 @@ import HorizontalLayout from '../layout/HorizontalLayout';
 import BlankLayout from '../layout/BlankLayout';
 import AboutUs from '../pages/About';
 import ContactUs from '../pages/ContactUs';
-import Table from '../pages/Table/Table'
 import MyBookings from '../pages/MyBookings'
 import CreateRoom from '../pages/CreateRoom';
 import Users from '../pages/Users';
 import AuthenticationProvider from '../common/provider/AuthenticationProvider';
+import ThankYou from '../pages/Thankyou';
 
 const routes = [
     {
@@ -33,7 +32,7 @@ const routes = [
     }, {
         path: "/users",
         layout: HorizontalLayout,
-        component: Table,
+        component: Users,
         isAdminProtected: true,
     },
     {
@@ -52,6 +51,12 @@ const routes = [
         path: "/mybookings",
         layout: HorizontalLayout,
         component: MyBookings,
+        isAdminProtected: false,
+    },
+    {
+        path: "/thank-you",
+        layout: HorizontalLayout,
+        component: ThankYou,
         isAdminProtected: false,
     },
     {

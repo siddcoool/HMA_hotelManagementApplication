@@ -43,7 +43,10 @@ const handleSubmit = (event) => {
 console.log({ floor })
 
 return (
+    <>
+    
     <form onSubmit={handleSubmit}>
+    <h3 style={{color:"white",}}>Create Room</h3>
         <input
             type="text"
             value={floor}
@@ -68,8 +71,9 @@ return (
             onChange={handleNameChange}
             placeholder="Enter name"
         />
-        <button type="submit">Submit</button>
+        <button type="submit" ><span style={{fontSize:"18px"}}>Submit</span></button>
     </form>
+    </>
 );
 }
 

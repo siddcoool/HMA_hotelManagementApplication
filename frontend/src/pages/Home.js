@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import Loader from "../common/component/Loader";
 import Cards from "../common/component/cards";
-import { getTomorrowDate } from "../common/functions/date";
+import { formatDate, getTomorrowDate } from "../common/functions/date";
 
 function Home() {
 
@@ -39,11 +39,8 @@ function Home() {
         });
     };
 
-    const goToBooking = (room) => {
-        navigate(`/room/${room._id}/booking`)
-    }
+   
 
-    
     const pageReset = () => {
         // window.location.reload();
         setFormData({ startDate: "", endDate: "" })
@@ -95,11 +92,11 @@ function Home() {
                         }
                     >
                         <button onClick={pageReset}>Reset</button>
-                        
-                        
+
+
                     </div>
                 </div>
-                <Cards items={rooms} onClick={goToBooking} />
+                <Cards items={rooms} tryBook={formData}  />
 
             </center>
         </div>

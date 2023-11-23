@@ -1,0 +1,20 @@
+/* ThankYou.css */
+
+.thank-you-container {
+    text-align: center;
+    margin: 50px auto;
+    padding: 20px;
+    max-width: 600px;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    background-color: #ecf0f1;
+  }
+  
+  .thank-you-container h2 {
+    color: #3498db;
+  }
+  
+  .thank-you-container p {
+    color: #555;
+  }
+  
