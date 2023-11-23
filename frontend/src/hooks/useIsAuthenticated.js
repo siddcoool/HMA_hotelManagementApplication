@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthenticationStatus } from '../common/constant/app';
 
 
 /**
@@ -14,17 +15,20 @@ const useIsAuthenticated = () => {
     const location = useLocation()
 
     const [user, setUser] = useState(null)
+    const [authenticationStatus, setAuthenticationStatus] = useState(AuthenticationStatus.notAvailable)
     
 
     const check = () => {
+        setAuthenticationStatus(AuthenticationStatus.loading)
         const user = localStorage.getItem('hma-user')
-        console.log({
-            user
-        });
         if(!user && location.pathname !== "/register") {
+            setAuthenticationStatus(AuthenticationStatus.notAvailable)
             navigate('/login')
         } else if(user) {
+            setAuthenticationStatus(AuthenticationStatus.available)
             setUser(JSON.parse(user))
+        } else {
+            setAuthenticationStatus(AuthenticationStatus.notAvailable)
         }
         
     }
@@ -50,6 +54,7 @@ const useIsAuthenticated = () => {
 
     return {
         user,
+        authenticationStatus,
         setAuthenticate,
         deleteAuthenticated
     }

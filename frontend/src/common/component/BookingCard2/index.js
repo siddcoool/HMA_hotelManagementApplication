@@ -1,8 +1,8 @@
 import './index.css'
 import dayjs from 'dayjs';
 
-const CardComponent = ({ bookings }) => {
-  
+const CardComponent = ({ bookings, onCancel }) => {
+
   return (
     <div className='outer-div'>
       {
@@ -14,7 +14,7 @@ const CardComponent = ({ bookings }) => {
                   <span className="title">Booking Created{booking.room.description}</span>
                   <p className="message">Start Date : {dayjs(booking.startDate).format('DD/MM/YYYY')} </p>
                   <p className="message">End Date : {dayjs(booking.endDate).format('DD/MM/YYYY')} </p>
-                  <button onClick={}>Cancel</button>
+                  <button onClick={() => onCancel(booking)}>Cancel</button>
                 </div>
               </div>
             </div>
