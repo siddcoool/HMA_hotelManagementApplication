@@ -30,7 +30,7 @@ const Signup = () => {
       const { status, data } = await axios.post('/user/register', formData);
 
       // Handle the response, you might want to redirect or show a success message
-      if (status == 200) {
+      if (status === 200) {
         toast.success(data.message)
         setAuthenticate(data.user, data.token)
       }
@@ -38,6 +38,7 @@ const Signup = () => {
         toast.warning('Signup Failed')
       }
     } catch (error) {
+      console.error(error)
       if (!error.response) {
         toast.error('Internal server error')
       }

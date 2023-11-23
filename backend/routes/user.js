@@ -28,22 +28,17 @@ userRouter.post("/login", async (req, res) => {
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
+                email: user.email,
+                isAdmin: user.isAdmin,
             }
         })
     }
 })
 
-userRouter.post('/:userId', async (req, res) => {
-    const Id = req.body.userId
-    const user = await User.findById(Id)
-    res.send(user)
-})
-
 userRouter.post("/register",
     body('email').notEmpty().trim().isEmail().withMessage("your email is incorrect"),
     body('name').notEmpty().isAlpha().withMessage("your name is incorrect"),
-    body('password').isStrongPassword().withMessage("your password is weak"),
+    // body('password').isStrongPassword().withMessage("your password is weak"),
     async (req, res) => {
         const body = req.body
         const result = validationResult(req)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useIsAuthenticated from "../hooks/useIsAuthenticated"
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import Loader from "../common/component/Loader";
 import Cards from "../common/component/cards";
@@ -10,7 +10,6 @@ import { getTomorrowDate } from "../common/functions/date";
 function Home() {
 
     const [rooms, setRooms] = useState([])
-    const [isAdmin, setAdmin] = useState([])
 
     const navigate = useNavigate();
     const { user } = useIsAuthenticated()
@@ -19,18 +18,7 @@ function Home() {
         startDate: '',
         endDate: ''
     });
-   
-    const CurrentUser = async () => {
 
-        try {
-           const me =  await axios.get(`/user/me`)
-           const userId = me._id
-           const userDetails = await axios.post(``, userId)
-           console.log({'me': me})
-        } catch (error) {
-            
-        }
-    }
     const fetchRooms = async () => {
         try {
             const res = await axios.get("/room", {
@@ -55,17 +43,14 @@ function Home() {
         navigate(`/room/${room._id}/booking`)
     }
 
-    const goToCreateRooms = () => {
-        navigate('/room/create')
-    }
+    
     const pageReset = () => {
         // window.location.reload();
-        setFormData({ startDate : "", endDate: ""})
+        setFormData({ startDate: "", endDate: "" })
     }
 
     useEffect(() => {
         fetchRooms();
-        
     }, [formData])
 
     if (!user) {
@@ -74,6 +59,7 @@ function Home() {
     if (rooms.length === 0) {
         return <Loader />
     }
+
 
     return (
         <div>
@@ -99,14 +85,22 @@ function Home() {
                             onChange={handleInputChange}
                         />
                     </label>
-                    
-                    <div style={{display: 'flex'} ,{justifyContent: 'space-between'}}>
-                    <button onClick={pageReset}>Reset</button>
-                    <button onClick={goToCreateRooms}>CreateRooms</button>
+
+                    <div
+                        style={
+                            {
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                            }
+                        }
+                    >
+                        <button onClick={pageReset}>Reset</button>
+                        
+                        
                     </div>
                 </div>
                 <Cards items={rooms} onClick={goToBooking} />
-                
+
             </center>
         </div>
     )

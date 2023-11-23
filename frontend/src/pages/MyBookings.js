@@ -1,8 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import BookingCard from "../common/component/BookingCard";
-import BookingCard2 from '../common/component/BookingCard2'
+import BookingCard from '../common/component/BookingCard2'
 
 
 const MyBookings = (props) => {
@@ -20,18 +19,16 @@ const MyBookings = (props) => {
     }
 
     useEffect(() => {
-             fetchBookings()
-        }, [])
-    
-    const cancelBookings = (BookingId) => {
+        fetchBookings()
+    }, [])
 
+    const cancelBookings = async (booking) => {
+        await axios.delete(`/booking/${booking._id}`)
     }
-console.log({bookings})
+    console.log({ bookings })
     return (
         <>
-            <div>bookings</div>
-            {/* <BookingCard bookings={bookings}  /> */}
-            <BookingCard2 bookings={bookings} {cancelBookings}/>
+            <BookingCard bookings={bookings} onCancel={cancelBookings} />
         </>
 
     )
