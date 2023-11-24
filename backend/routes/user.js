@@ -20,14 +20,20 @@ userRouter.get('/', Authentication.Admin, async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
     const body = req.body
-    const user = await User.findOne({ email: body.email, password: body.password }, { password: 0 })
+    const user = await User.findOne({ email: body.email })
+
     if (!user) {
         res.status(404).json({ message: "user not found" })
     }
     else if (user.isBlocked) {
         res.status(401).json({ message: "user is blocked" })
     }
+
     else {
+
+        const isValid = await user.comparePassword(body.password)
+        if (!isValid) return res.status(401).json({ message: "login failed" })
+
         const token = TokenManagement.createToken(user.toJSON())
         TokenCache.set(token, ipConvertor(req))
         res.json({
