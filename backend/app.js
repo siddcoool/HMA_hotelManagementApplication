@@ -9,7 +9,8 @@ const roomRouter = require('./routes/room');
 const Authentication = require('./middlewares/Authentication');
 const bookingRouter = require('./routes/booking');
 const reqlog = require('./lib/logger');
-var morgan = require('morgan')
+var morgan = require('morgan');
+const tokenRouter = require('./routes/token');
 
 app.use(cors())
 app.use(express.json())
@@ -18,6 +19,7 @@ app.use(morgan('dev'))
 app.use("/user", userRouter)
 app.use("/room", Authentication.Customer, roomRouter)
 app.use("/booking", Authentication.Customer, bookingRouter)
+app.use("/token",Authentication.Customer, tokenRouter)
 
 
 app.get('/', (req, res) => {

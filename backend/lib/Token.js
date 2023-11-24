@@ -6,7 +6,7 @@ class Token {
     constructor() { }
 
     createToken(payload) { // e.g user, room, booking
-        return jwt.sign(payload, secret, { expiresIn: '1h' });
+        return jwt.sign(payload, secret, { expiresIn: 1200 });
     }
 
     verify(token) {
