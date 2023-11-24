@@ -19,6 +19,6 @@ class Token {
     }
 }
 
-const TokenManagement = new Token()
+const TokenManagement = new Token()   
 
 module.exports = TokenManagement

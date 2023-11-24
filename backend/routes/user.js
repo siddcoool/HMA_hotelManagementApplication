@@ -3,7 +3,9 @@ const User = require('../models/User.js')
 const userRouter = express.Router()
 const { body, validationResult } = require('express-validator')
 const TokenManagement = require('../lib/Token.js')
+const { TokenCache } = require("../lib/allCache.js")
 const Authentication = require('../middlewares/Authentication.js')
+const { ipConvertor } = require('../lib/operation.js')
 
 userRouter.get('/', Authentication.Admin, async (req, res) => {
     // const cachedUsers = await redisConnection.client.get('users')
@@ -26,9 +28,11 @@ userRouter.post("/login", async (req, res) => {
         res.status(401).json({ message: "user is blocked" })
     }
     else {
+        const token = TokenManagement.createToken(user.toJSON())
+        TokenCache.set(token, ipConvertor(req))
         res.json({
             message: "Login Success",
-            token: TokenManagement.createToken(user.toJSON()),
+            token,
             user: {
                 id: user._id,
                 name: user.name,
@@ -52,9 +56,11 @@ userRouter.post("/register",
         const existingUser = await User.findOne({ email: body.email })
         if (!existingUser) {
             const user = await User.create(req.body)
+            const token = TokenManagement.createToken(user.toJSON())
+            TokenCache.set(token, ipConvertor(req))
             res.status(200).json({
                 message: "user saved successfully",
-                token: TokenManagement.createToken(user.toJSON()),
+                token,
                 user: {
                     id: user._id,
                     name: user.name,
